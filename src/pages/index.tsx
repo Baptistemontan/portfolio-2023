@@ -2,10 +2,18 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import useTranslation from 'next-translate/useTranslation'
+import setLanguage from 'next-translate/setLanguage'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const languageSwitchTable = {
+  "en": "fr",
+  "fr": "en"
+};
+
 export default function Home() {
+  const { t, lang } = useTranslation("common")
   return (
     <>
       <Head>
@@ -15,6 +23,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
+        <p>
+          <button onClick={async () => await setLanguage(languageSwitchTable[lang as "fr" | "en"] || "fr")}>{t("switch-lang")}</button>
+        </p>
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
