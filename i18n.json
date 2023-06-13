@@ -2,6 +2,6 @@
     "locales": ["en", "fr"],
     "defaultLocale": "fr",
     "pages": {
-      "*": ["common"]
+      "*": ["common", "navigation"]
     }
   }

@@ -1,0 +1,21 @@
+
+
+.links {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+.link {
+    padding: 10px;
+    transition: var(--transition);
+}
+
+.link:hover {
+    color: var(--fourth-color);
+    transform: translateY(-3px);
+}
