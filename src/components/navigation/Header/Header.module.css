@@ -16,6 +16,7 @@
     align-items: center;
     position: fixed;
     top: 0px;
+    right: 0px;
     z-index: 11;
     padding: 0px 50px;
     width: 100%;

@@ -10,7 +10,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Header />
       <LeftNav />
       <RightNav />
-      <Component {...pageProps} />
+      <main>
+        <Component {...pageProps} />
+      </main>
     </div>
   );
 }

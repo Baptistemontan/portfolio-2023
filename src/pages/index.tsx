@@ -5,6 +5,7 @@ import styles from "@/styles/Home.module.css";
 import useTranslation from "next-translate/useTranslation";
 import setLanguage from "next-translate/setLanguage";
 import Header from "@/components/navigation/Header";
+import Intro from "@/components/content/Intro";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +15,9 @@ const languageSwitchTable = {
 };
 
 export default function Home() {
-  const { t, lang } = useTranslation("common");
-  return <div style={{ height: "3000px" }}></div>;
+  return (
+    <>
+      <Intro />
+    </>
+  );
 }
