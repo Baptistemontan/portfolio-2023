@@ -81,7 +81,7 @@
     font-size: var(--fz-xs);
 }
 
-.link:hover {
+.link:hover, .link.selectedLink {
     color: var(--fourth-color);
 }
 

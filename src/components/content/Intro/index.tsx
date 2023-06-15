@@ -24,6 +24,7 @@ export default function Intro() {
                 <a
                   href="https://www.esiea.fr/"
                   key="esiea"
+                  target="_blank"
                   className={Styles.link}
                 />
               ),
@@ -31,6 +32,7 @@ export default function Intro() {
                 <a
                   href="https://www.soprasteria.fr/"
                   key="ssg"
+                  target="_blank"
                   className={Styles.link}
                 />
               ),

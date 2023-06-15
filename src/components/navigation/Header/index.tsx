@@ -2,6 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import Styles from "./Header.module.css";
 import useScroll, { SCROLL_DOWN, SCROLL_UP } from "@/hooks/useScroll";
 import { useState } from "react";
+import Link from "next/link";
 
 interface NavigationLinks {
   label: string;
@@ -17,26 +18,30 @@ function makeNavigationLinks(...labels: string[]): NavigationLinks[] {
   }));
 }
 
-const navigationLinks: NavigationLinks[] = makeNavigationLinks(
-  "about",
-  "experience",
-  "work",
-  "contact"
-);
+export const viewsLinks = ["about", "experience", "work", "contact"] as const;
+export type Views = (typeof viewsLinks)[number];
+
+const navigationLinks: NavigationLinks[] = makeNavigationLinks(...viewsLinks);
 
 function NavigationButton({ link, translationId }: NavigationLinks) {
   const { t } = useTranslation();
-  return <a href={link}>{t(translationId)}</a>;
+  return <Link href={link}>{t(translationId)}</Link>;
 }
 
-function NavigationList() {
+function NavigationList({ currentView }: { currentView: Views | null }) {
   return (
     <ol>
-      {navigationLinks.map((link) => (
-        <li key={link.label} className={Styles.link}>
-          <NavigationButton {...link} />
-        </li>
-      ))}
+      {navigationLinks.map((link) => {
+        const className =
+          currentView === link.label
+            ? `${Styles.link} ${Styles.selectedLink}`
+            : Styles.link;
+        return (
+          <li key={link.label} className={className}>
+            <NavigationButton {...link} />
+          </li>
+        );
+      })}
     </ol>
   );
 }
@@ -58,7 +63,7 @@ function Hamburger({ onClick, isOpen }: HamburgerProps) {
   );
 }
 
-function SideMenu({ menuOpen, toggleMenu }: HeaderProps) {
+function SideMenu({ menuOpen, toggleMenu, view }: HeaderProps) {
   const { t } = useTranslation();
 
   const menuClassname = menuOpen
@@ -74,7 +79,7 @@ function SideMenu({ menuOpen, toggleMenu }: HeaderProps) {
       <Hamburger onClick={toggleMenu} isOpen={menuOpen} />
       <div className={blurClassname} onClick={toggleMenu}></div>
       <div className={menuClassname}>
-        <NavigationList />
+        <NavigationList currentView={view} />
         <div className={Styles.resume}>{t("navigation:resume")}</div>
       </div>
     </>
@@ -84,6 +89,7 @@ function SideMenu({ menuOpen, toggleMenu }: HeaderProps) {
 interface HeaderProps {
   toggleMenu: () => void;
   menuOpen: boolean;
+  view: Views | null;
 }
 
 export default function Header(props: HeaderProps) {
@@ -102,7 +108,7 @@ export default function Header(props: HeaderProps) {
       <nav className={Styles.nav}>
         <div></div>
         <div className={Styles.topLinks}>
-          <NavigationList />
+          <NavigationList currentView={props.view} />
           <div className={Styles.resume}>{t("navigation:resume")}</div>
         </div>
         <SideMenu {...props} />
