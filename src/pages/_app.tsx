@@ -8,17 +8,14 @@ import { useEffect, useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { asScrolled, resetAsScrolled } = useScroll();
+  const { asScrolled } = useScroll();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
   useEffect(() => {
-    if (asScrolled) {
-      setMenuOpen(false);
-    }
-    return resetAsScrolled;
-  }, [asScrolled, resetAsScrolled]);
+    setMenuOpen(false);
+  }, [asScrolled]);
 
   return (
     <div id="mainDiv">

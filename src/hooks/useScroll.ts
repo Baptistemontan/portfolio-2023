@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useDebounce from "./useDebounce";
 
 export const [SCROLL_UP, SCROLL_DOWN] = ["up", "down"] as const;
 
@@ -10,21 +11,23 @@ interface ScrollInfo {
   direction: ScrollDirection;
   top: boolean;
   asScrolled: boolean;
-  resetAsScrolled: () => void;
 }
 
-export default function useScroll(
-  initialDirection: ScrollDirection = SCROLL_DOWN,
-  isTop: boolean = true,
-  topOffset = THRESHOLD
-): ScrollInfo {
+interface useScrollProps {
+  initialDirection?: ScrollDirection,
+  isTop?: boolean,
+  topOffset?: number;
+}
+
+export default function useScroll({
+  initialDirection = SCROLL_DOWN,
+  isTop = true,
+  topOffset = THRESHOLD,
+
+}: useScrollProps = {}): ScrollInfo {
   const [direction, setDirection] = useState(initialDirection);
   const [top, setTop] = useState(isTop);
-  const [asScrolled, setAsScrolled] = useState(false);
-
-  const resetAsScrolled = () => {
-    setAsScrolled(false);
-  }
+  const [asScrolled, setAsScrolled] = useDebounce(false);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -39,9 +42,8 @@ export default function useScroll(
         ticking = false;
         return;
       }
-
+      setAsScrolled((as) => !as);
       setDirection(scrollY > lastScrollY ? SCROLL_DOWN : SCROLL_UP);
-      setAsScrolled(true);
       lastScrollY = scrollY > 0 ? scrollY : 0;
       ticking = false;
     };
@@ -55,12 +57,11 @@ export default function useScroll(
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [topOffset]);
+  }, [topOffset, setAsScrolled]);
 
   return {
     direction,
     top,
-    asScrolled,
-    resetAsScrolled
+    asScrolled
   };
 }

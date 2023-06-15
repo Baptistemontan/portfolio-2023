@@ -88,7 +88,7 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const { t } = useTranslation();
-  const { direction, top } = useScroll(SCROLL_DOWN, true, 50);
+  const { direction, top } = useScroll({ topOffset: 50 });
 
   let headerClassName = Styles.header;
   if (direction == SCROLL_DOWN && !top) {

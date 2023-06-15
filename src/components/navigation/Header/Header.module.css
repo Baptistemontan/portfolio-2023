@@ -125,6 +125,10 @@
 .hamburgerWrapper {
     display: none;
     position: relative;
+    min-width: 40px;
+    min-height: 40px;
+    justify-content: center;
+    align-items: center;
 }
 
 .hamburger {
@@ -190,8 +194,8 @@
     bottom: 0px;
     right: 0px;
     width: min(75vw, 400px);
-    height: 100vh;
-    padding: 15% 10px;
+    height: 120vh;
+    padding: 15%  10px calc(15% + 20vh) 10px;
     transition: var(--hamburger-transition);
     transform: translateX(100%);
     -webkit-box-pack: justify;
@@ -240,7 +244,7 @@
     }
 
     .hamburgerWrapper {
-        display: inherit;
+        display: flex;
     }
 
     .link a {
