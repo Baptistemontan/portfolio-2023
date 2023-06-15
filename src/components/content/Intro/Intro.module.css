@@ -13,6 +13,24 @@
     padding: 0 150px;
 }
 
+@media (max-width: 1350px) {
+    .intro {
+        padding: 0 100px;
+    }
+}
+
+@media (max-width: 1080px) {
+    .intro {
+        padding: 0 50px;
+    }
+}
+
+@media (max-width: 780px) {
+    .intro {
+        padding: 0;
+    }
+}
+
 .intro_section {
     margin: 0px;
     padding: 0px;

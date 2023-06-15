@@ -9,6 +9,8 @@ const THRESHOLD = 5;
 interface ScrollInfo {
   direction: ScrollDirection;
   top: boolean;
+  asScrolled: boolean;
+  resetAsScrolled: () => void;
 }
 
 export default function useScroll(
@@ -18,6 +20,11 @@ export default function useScroll(
 ): ScrollInfo {
   const [direction, setDirection] = useState(initialDirection);
   const [top, setTop] = useState(isTop);
+  const [asScrolled, setAsScrolled] = useState(false);
+
+  const resetAsScrolled = () => {
+    setAsScrolled(false);
+  }
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -34,6 +41,7 @@ export default function useScroll(
       }
 
       setDirection(scrollY > lastScrollY ? SCROLL_DOWN : SCROLL_UP);
+      setAsScrolled(true);
       lastScrollY = scrollY > 0 ? scrollY : 0;
       ticking = false;
     };
@@ -52,5 +60,7 @@ export default function useScroll(
   return {
     direction,
     top,
+    asScrolled,
+    resetAsScrolled
   };
 }

@@ -19,3 +19,9 @@
     color: var(--fourth-color);
     transform: translateY(-3px);
 }
+
+@media (max-width: 780px) {
+    .link {
+        transition: none;
+    }
+}

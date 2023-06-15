@@ -18,6 +18,22 @@
     left: auto;
 }
 
+@media (max-width: 1080px) {
+    .navLeft {
+        left: 20px;
+    }
+    
+    .navRight {
+        right: 20px;
+    }
+}
+
+@media (max-width: 780px) {
+    .nav {
+        visibility: hidden;
+    }
+}
+
 .nav::after {
     content: "";
     display: block;

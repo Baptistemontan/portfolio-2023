@@ -1,6 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import Styles from "./Header.module.css";
 import useScroll, { SCROLL_DOWN, SCROLL_UP } from "@/hooks/useScroll";
+import { useState } from "react";
 
 interface NavigationLinks {
   label: string;
@@ -40,9 +41,55 @@ function NavigationList() {
   );
 }
 
-export default function Header() {
+interface HamburgerProps {
+  onClick: () => void;
+  isOpen: boolean;
+}
+
+function Hamburger({ onClick, isOpen }: HamburgerProps) {
+  const className = isOpen
+    ? `${Styles.hamburger} ${Styles.hamburgerClicked}`
+    : Styles.hamburger;
+
+  return (
+    <div className={Styles.hamburgerWrapper} onClick={onClick}>
+      <span className={className} />
+    </div>
+  );
+}
+
+function SideMenu({ menuOpen, toggleMenu }: HeaderProps) {
+  const { t } = useTranslation();
+
+  const menuClassname = menuOpen
+    ? `${Styles.sideMenu} ${Styles.sideMenuOpen}`
+    : Styles.sideMenu;
+
+  const blurClassname = menuOpen
+    ? `${Styles.blur} ${Styles.sideMenuOpen}`
+    : Styles.sideMenu;
+
+  return (
+    <>
+      <Hamburger onClick={toggleMenu} isOpen={menuOpen} />
+      <div className={blurClassname} onClick={toggleMenu}></div>
+      <div className={menuClassname}>
+        <NavigationList />
+        <div className={Styles.resume}>{t("navigation:resume")}</div>
+      </div>
+    </>
+  );
+}
+
+interface HeaderProps {
+  toggleMenu: () => void;
+  menuOpen: boolean;
+}
+
+export default function Header(props: HeaderProps) {
   const { t } = useTranslation();
   const { direction, top } = useScroll(SCROLL_DOWN, true, 50);
+
   let headerClassName = Styles.header;
   if (direction == SCROLL_DOWN && !top) {
     headerClassName = `${headerClassName} ${Styles.headerScrollDown}`;
@@ -54,10 +101,11 @@ export default function Header() {
     <header className={headerClassName}>
       <nav className={Styles.nav}>
         <div></div>
-        <div className={Styles.links}>
+        <div className={Styles.topLinks}>
           <NavigationList />
           <div className={Styles.resume}>{t("navigation:resume")}</div>
         </div>
+        <SideMenu {...props} />
       </nav>
     </header>
   );
