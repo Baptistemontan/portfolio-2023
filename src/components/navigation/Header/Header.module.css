@@ -255,3 +255,8 @@
         font-size: var(--fz-md);
     }
 }
+
+.flag {
+    width: 40px;
+    height: 40px;
+}

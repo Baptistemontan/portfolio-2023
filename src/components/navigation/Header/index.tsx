@@ -4,6 +4,7 @@ import useScroll, { SCROLL_DOWN, SCROLL_UP } from "@/hooks/useScroll";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { LangIcon } from "../RightNav";
 
 interface NavigationLinks {
   label: string;
@@ -95,6 +96,9 @@ function SideMenu({ menuOpen, toggleMenu }: HeaderProps) {
       <div className={menuClassname}>
         <NavigationList />
         <div className={Styles.resume}>{t("navigation:resume")}</div>
+        <div className={Styles.flag}>
+          <LangIcon />
+        </div>
       </div>
     </>
   );
