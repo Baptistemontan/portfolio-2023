@@ -21,8 +21,8 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [asScrolled]);
 
   useEffect(() => {
-    const [res] = Array.from(asPath.matchAll(/.*#([a-z0-9]*)/gi));
-    const currentView = res[1];
+    const res = Array.from(asPath.matchAll(/.*#([a-z0-9]*)/gi)).at(0);
+    const currentView = res?.at(1);
 
     if (currentView && viewsLinks.includes(currentView as Views)) {
       setView(currentView as Views);
