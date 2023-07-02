@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 export default function App({ Component, pageProps }: AppProps) {
   const { asPath } = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [view, setView] = useState<Views | null>(null);
   const { asScrolled } = useScroll();
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -18,23 +17,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     setMenuOpen(false);
-  }, [asScrolled]);
-
-  useEffect(() => {
-    const res = Array.from(asPath.matchAll(/.*#([a-z0-9]*)/gi)).at(0);
-    const currentView = res?.at(1);
-
-    if (currentView && viewsLinks.includes(currentView as Views)) {
-      setView(currentView as Views);
-    } else {
-      setView(null);
-    }
-    setMenuOpen(false);
-  }, [asPath]);
+  }, [asScrolled, asPath]);
 
   return (
     <div id="mainDiv">
-      <Header {...{ toggleMenu, menuOpen, view }} />
+      <Header {...{ toggleMenu, menuOpen }} />
       <LeftNav />
       <RightNav />
       <main className={menuOpen ? "blur" : undefined}>

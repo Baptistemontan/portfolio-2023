@@ -1,8 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
 import Styles from "./Header.module.css";
 import useScroll, { SCROLL_DOWN, SCROLL_UP } from "@/hooks/useScroll";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface NavigationLinks {
   label: string;
@@ -28,12 +29,25 @@ function NavigationButton({ link, translationId }: NavigationLinks) {
   return <Link href={link}>{t(translationId)}</Link>;
 }
 
-function NavigationList({ currentView }: { currentView: Views | null }) {
+function NavigationList() {
+  const { asPath } = useRouter();
+  const [view, setView] = useState<Views | null>(null);
+  useEffect(() => {
+    const res = Array.from(asPath.matchAll(/.*#([a-z0-9]*)/gi)).at(0);
+    const currentView = res?.at(1);
+
+    if (currentView && viewsLinks.includes(currentView as Views)) {
+      setView(currentView as Views);
+    } else {
+      setView(null);
+    }
+  }, [asPath]);
+
   return (
     <ol>
       {navigationLinks.map((link) => {
         const className =
-          currentView === link.label
+          view === link.label
             ? `${Styles.link} ${Styles.selectedLink}`
             : Styles.link;
         return (
@@ -63,7 +77,7 @@ function Hamburger({ onClick, isOpen }: HamburgerProps) {
   );
 }
 
-function SideMenu({ menuOpen, toggleMenu, view }: HeaderProps) {
+function SideMenu({ menuOpen, toggleMenu }: HeaderProps) {
   const { t } = useTranslation();
 
   const menuClassname = menuOpen
@@ -79,7 +93,7 @@ function SideMenu({ menuOpen, toggleMenu, view }: HeaderProps) {
       <Hamburger onClick={toggleMenu} isOpen={menuOpen} />
       <div className={blurClassname} onClick={toggleMenu}></div>
       <div className={menuClassname}>
-        <NavigationList currentView={view} />
+        <NavigationList />
         <div className={Styles.resume}>{t("navigation:resume")}</div>
       </div>
     </>
@@ -89,7 +103,6 @@ function SideMenu({ menuOpen, toggleMenu, view }: HeaderProps) {
 interface HeaderProps {
   toggleMenu: () => void;
   menuOpen: boolean;
-  view: Views | null;
 }
 
 export default function Header(props: HeaderProps) {
@@ -108,7 +121,7 @@ export default function Header(props: HeaderProps) {
       <nav className={Styles.nav}>
         <div></div>
         <div className={Styles.topLinks}>
-          <NavigationList currentView={props.view} />
+          <NavigationList />
           <div className={Styles.resume}>{t("navigation:resume")}</div>
         </div>
         <SideMenu {...props} />
